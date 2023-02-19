@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tic Tac Toe Game</title>
+    <style>
+      button {
+        font-size: 50px;
+        width: 100px;
+        height: 100px;
+      }
+      #board {
+        display: flex;
+        flex-wrap: wrap;
+        width: 340px;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Tic Tac Toe Game</h1>
+    <div id="board"></div>
+    <script>
+      const PLAYER = "X";
+      const COMPUTER = "O";
+      let currentPlayer = PLAYER;
+      let gameBoard = ["", "", "", "", "", "", "", "", ""];
+      let gameOver = false;
+      const WINNING_COMBOS = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+      ];
+
+      const board = document.getElementById("board");
+      for (let i = 0; i < 9; i++) {
+        const button = document.createElement("button");
+        button.id = i;
+        button.addEventListener("click", () => {
+          if (!gameOver && gameBoard[i] === "") {
+            gameBoard[i] = currentPlayer;
+            button.textContent = currentPlayer;
+            checkWinner();
+            currentPlayer = currentPlayer === PLAYER ? COMPUTER : PLAYER;
+            if (currentPlayer === COMPUTER && !gameOver) {
+              computerMove();
+            }
+          }
+        });
+        board.appendChild(button);
+      }
+
+      function computerMove() {
+        let index = Math.floor(Math.random() * 9);
+        while (gameBoard[index] !== "") {
+          index = Math.floor(Math.random() * 9);
+        }
+        gameBoard[index] = COMPUTER;
+        document.getElementById(index).textContent = COMPUTER;
+        checkWinner();
+        currentPlayer = currentPlayer === PLAYER ? COMPUTER : PLAYER;
+      }
+
+      function checkWinner() {
+        for (let i = 0; i < WINNING_COMBOS.length; i++) {
+          const [a, b, c] = WINNING_COMBOS[i];
+          if (
+            gameBoard[a] !== "" &&
+            gameBoard[a] === gameBoard[b] &&
+            gameBoard[b] === gameBoard[c]
+          ) {
+            alert(`${gameBoard[a]} won the game!`);
+            gameOver = true;
+            break;
+          }
+        }
+        if (!gameOver && gameBoard.every((cell) => cell !== "")) {
+          alert("It's a tie!");
+          gameOver = true;
+        }
+      }
+    </script>
+  </body>
+</html>
