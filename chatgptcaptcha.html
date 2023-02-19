@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Captcha Example</title>
+  </head>
+  <body>
+    <h1>Simple Captcha Example</h1>
+    <label for="captcha">Please solve the following math problem:</label>
+    <div id="captcha"></div>
+    <input type="text" id="answer" />
+    <button onclick="checkAnswer()">Submit</button>
+
+    <script>
+      function generateCaptcha() {
+        const firstNumber = Math.floor(Math.random() * 10);
+        const secondNumber = Math.floor(Math.random() * 10);
+        const captchaElement = document.getElementById("captcha");
+        captchaElement.textContent = `${firstNumber} + ${secondNumber} = `;
+        return firstNumber + secondNumber;
+      }
+
+      function checkAnswer() {
+        const answer = parseInt(document.getElementById("answer").value);
+        if (answer === generateCaptcha()) {
+          alert("Correct!");
+        } else {
+          alert("Incorrect, please try again.");
+        }
+        generateCaptcha();
+        document.getElementById("answer").value = "";
+      }
+
+      generateCaptcha();
+    </script>
+  </body>
+</html>
